@@ -6,16 +6,22 @@ import joblib
 from gradio.components import *
 
 
+#define prediction function
 def make_prediction(gender, Partner, Dependents, tenure, MultipleLines,
        InternetService, OnlineSecurity, OnlineBackup, DeviceProtection,
        TechSupport, Contract, PaperlessBilling, PaymentMethod,
        MonthlyCharges, TotalCharges):
+    #make a dataframe from input data
+    input_data = pd.DataFrame({'gender':[gender], 'Partner':[Partner], 'Dependents':[Dependents], 'tenure':[tenure], 'MultipleLines':[MultipleLines],
+       'InternetService':[InternetService], 'OnlineSecurity':[OnlineSecurity], 'OnlineBackup':[OnlineBackup], 'DeviceProtection':[DeviceProtection],
+       'TechSupport':[TechSupport], 'Contract':[Contract], 'PaperlessBilling':[PaperlessBilling], 'PaymentMethod':[PaymentMethod],
+       'MonthlyCharges':[MonthlyCharges], 'TotalCharges':[TotalCharges]})
+       
+   #load already saved pipeline and make predictions
     with open("best_model.joblib", "rb") as f:
         model = joblib.load(f)
-        predt = model.predict([[gender, Partner, Dependents, tenure, MultipleLines,
-       InternetService, OnlineSecurity, OnlineBackup, DeviceProtection,
-       TechSupport, Contract, PaperlessBilling, PaymentMethod,
-       MonthlyCharges, TotalCharges]]) 
+        predt = model.predict(input_data) 
+    #return prediction 
     if predt == 'Yes':
         return 'Customer Will Churn'
     return 'Customer Will Not Churn'
@@ -37,7 +43,7 @@ PaymentMethod_input = gr.Dropdown(choices =['Electronic check', 'Mailed check', 
 MonthlyCharges_input = gr.Number()
 TotalCharges_input = gr.Number()
 
-output = gr.Textbox()
+output = gr.Textbox(label='Prediction')
 
 app = gr.Interface(fn =make_prediction, inputs =[gender_input,
                                                  Partner_input,
@@ -55,4 +61,4 @@ app = gr.Interface(fn =make_prediction, inputs =[gender_input,
                                                  MonthlyCharges_input,
                                                  TotalCharges_input], outputs = output)
 
-app.launch(share=True)
+app.launch(share = True, debug = True)
