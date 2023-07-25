@@ -100,7 +100,7 @@ Interact with the Gradio app in your web browser and test the churn prediction f
 
 Alternatively, you can visit: click here ⬇️
 
-[![Gradio app](images/Gradio.jpg)](https://huggingface.co/spaces/slickdata/Customer-Churning-App)
+[![Gradio app]()](https://huggingface.co/spaces/slickdata/Customer-Churning-App)
 
 
 
